@@ -30,6 +30,12 @@
 * 
 * What's new:
 * Made node images optional
+*
+* TODO:
+* Moving mapNodeList to a seperate file, preferably configurable from RVVM
+* Map scrolling
+* Adding event commands to change mapX and mapY values
+* 
 * --------------------------------------------------------------------------------
 * Version 1.0
 * --------------------------------------------------------------------------------
