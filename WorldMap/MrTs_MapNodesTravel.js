@@ -31,10 +31,11 @@
 * What's new:
 * Made node images optional
 * Added event command to change actor's start location
+* Added map scrolling to selected node
 *
 * TODO:
 * Moving mapNodeList to a seperate file, preferably configurable from RVVM
-* Map scrolling
+* Improve map scrolling
 * 
 * --------------------------------------------------------------------------------
 * Version 1.0
@@ -434,6 +435,37 @@
 		}
 	};
 
+/**
+ *	Moves the screen to show the selected node in the middle if possible
+ *	moves background image accordingly
+ */
+Window_MapNodes.prototype.updateWindowForSelectedNode = function() {
+		var nodes = $gameSystem.getMapNodesShown();
+		var node = mapNodeList[nodes[this.index()]];
+
+		diffX = node.xMenu - this.width/2;
+		diffY = node.yMenu - this.height/2;
+
+		var backgroundImage = SceneManager._scene._backgroundImage;
+		if(diffX<0){
+			diffX = 0;
+		}
+		else if((diffX+this.width)>backgroundImage.width){
+			diffX = backgroundImage.width - this.width;
+		} 
+		if(diffY<0){
+			diffY = 0;
+		}
+		else if((diffY+this.height)>backgroundImage.height){
+			diffY = backgroundImage.height - this.height;
+		}
+		diffX = -1*diffX;
+		diffY = -1*diffY;
+
+		backgroundImage.move(diffX,diffY);
+		this.move(diffX,diffY,this.width,this.height);
+	};
+
 	Window_MapNodes.prototype.cursorDown = function(wrap) {
 		var lowerWithY = [];
 		var index = this.index();
@@ -448,6 +480,7 @@
 		});
 		if (lowerWithY.length > 0) this.select(lowerWithY[0]);
 		this.updateInfoSprite();
+		this.updateWindowForSelectedNode();
 	};
 
 	Window_MapNodes.prototype.cursorUp = function(wrap) {
@@ -464,6 +497,7 @@
 		});
 		if (higherWithY.length > 0) this.select(higherWithY[0]);
 		this.updateInfoSprite();
+		this.updateWindowForSelectedNode();
 	};
 
 	Window_MapNodes.prototype.cursorRight = function(wrap) {
@@ -480,6 +514,7 @@
 		});
 		if (higherWithX.length > 0) this.select(higherWithX[0]);
 		this.updateInfoSprite();
+		this.updateWindowForSelectedNode();
 	};
 
 	Window_MapNodes.prototype.cursorLeft = function(wrap) {
@@ -496,6 +531,7 @@
 		});
 		if (lowerWithX.length > 0) this.select(lowerWithX[0]);
 		this.updateInfoSprite();
+		this.updateWindowForSelectedNode();
 	};
 
 	Window_MapNodes.prototype.distance = function(x1, y1, x2, y2) {
