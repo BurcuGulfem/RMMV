@@ -30,11 +30,11 @@
 * 
 * What's new:
 * Made node images optional
+* Added event command to change actor's start location
 *
 * TODO:
 * Moving mapNodeList to a seperate file, preferably configurable from RVVM
 * Map scrolling
-* Adding event commands to change mapX and mapY values
 * 
 * --------------------------------------------------------------------------------
 * Version 1.0
@@ -74,6 +74,8 @@
 * MapNode Lock [KEYNAME] - Locks node on the map
 * MapNode Unlock [KEYNAME] - Unlocks node on the map
 *
+* MapNode SET_START_XY [KEYNAME] [X] [Y] - Changes the map's starting location to X,Y
+*
 * Examples:
 * MapNode Enter
 * 
@@ -82,6 +84,7 @@
 *
 * MapNode Lock Graveyard
 * Mapnode Unlock StoneFarm
+* Mapnode SET_START_XY Forest 10 1
 * --------------------------------------------------------------------------------
 *
 * --------------------------------------------------------------------------------
@@ -208,6 +211,10 @@
 				{
 					$gameSystem.unlockMapNode(args[1]);
 				} break;
+				case 'SET_START_XY':
+				{
+					$gameSystem.setStartLocationForMap(args[1],args[2],args[3]);
+				} break;
 			}
 		}
 	};
@@ -261,6 +268,17 @@
 
 	Game_System.prototype.getMapNodesShown = function() {
 		return this._nodesShown;
+	};
+
+	Game_System.prototype.setStartLocationForMap = function(keyname,mapX,mapY) {
+		if (!mapNodeList[keyname]) {
+			console.warn(keyname + " doesn't exist in mapNodeList!");
+			return;
+		}
+		var node = mapNodeList[keyname];
+		node.mapX = parseInt(mapX);
+		node.mapY = parseInt(mapY);
+		mapNodeList[keyname] = node;
 	};
 
 	//--------------------------------------------------------------------------
