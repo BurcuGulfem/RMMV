@@ -1,5 +1,7 @@
 # MrTS_MapNodesTravel v1.01
-Allows to travel to different maps through node selection
+Allows to travel to different maps through node selection.
+
+Original plugin: https://github.com/Trivel/RMMV
 
 ### What's new:
 * Made node images optional
